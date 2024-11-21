@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import Axios from 'axios';
 import './ResetPassword.css';
 import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const ResetPassword = () => {
+    const navigate = useNavigate();
     const { token } = useParams(); // Token passed as a URL parameter
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -28,9 +30,16 @@ const ResetPassword = () => {
         }
 
         try {
-            const response = await Axios.post(`http://localhost:5000/reset-password/${token}`, {
-                password,
+            const response = await Axios.post(`http://localhost:3000/auth/reset-password/${token}`, {
+                newPassword: password,
+            }, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
             });
+            if(response.status){
+                navigate('/login');
+            }
             setMessage(response.data.message);
             setError('');
         } catch (err) {

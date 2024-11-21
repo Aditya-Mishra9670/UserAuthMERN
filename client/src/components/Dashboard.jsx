@@ -8,7 +8,7 @@ const Dashboard = () => {
     const navigate = useNavigate();
 
     useEffect(()=>{
-        axios.get('http://localhost:3000/auth/verify')
+        axios.get('http://localhost:3000/auth/verify',{ withCredentials: true })
         .then(res=>{
             if(!res.data.status){
                 navigate("/")

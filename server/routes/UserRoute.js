@@ -70,7 +70,7 @@ router.post("/login", async (req, res) => {
     });
 
     // Successful response
-    return res.status(200).json({ message: "Login successful!" });
+    return res.status(200).json({ status:true,message: "Login successful!" });
   } catch (error) {
     console.error("Login Error:", error);
     return res.status(500).json({ message: "Internal Server Error" });
@@ -143,6 +143,42 @@ const verifyUser = async (req, res, next) => {
 // Protected route
 router.get('/verify', verifyUser, (req, res) => {
   return res.json({ status: true, message: "Authorized" });
+});
+
+
+// POST request to reset the password
+router.post('/reset-password/:token', async (req, res) => {
+  const { token } = req.params;
+  const { newPassword } = req.body; // User submits their new password
+
+  if (!newPassword) {
+    return res.status(400).json({ message: "New password is required!" });
+  }
+
+  try {
+    // Verify the token
+    const decoded = jwt.verify(token, process.env.KEY);
+    if(!decoded){
+      return res.status(401).json({message:"Your pasword Reset session expired!"});
+    }
+    // Find the user based on the decoded ID
+    const user = await User.findById(decoded.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found!" });
+    }
+
+    // Hash the new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // Update the user's password
+    user.password = hashedPassword;
+    await user.save();
+
+    return res.status(200).json({ message: "Password reset successfully!" });
+  } catch (error) {
+    console.error("Error resetting password:", error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
 });
 
 router.get('/logout', (req, res) => {
