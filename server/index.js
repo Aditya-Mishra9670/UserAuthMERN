@@ -26,7 +26,7 @@ app.use(cors(corsOptions));
 app.use('/auth', UserRouter); 
 
 // MongoDB connection
-mongoose.connect('mongodb://127.0.0.1:27017/authentication', {
+mongoose.connect(process.env.MONGO_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
