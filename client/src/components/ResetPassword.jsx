@@ -30,7 +30,7 @@ const ResetPassword = () => {
         }
 
         try {
-            const response = await Axios.post(`http://localhost:3000/auth/reset-password/${token}`, {
+            const response = await Axios.post(`https://userauthmern.onrender.com/auth/reset-password/${token}`, {
                 newPassword: password,
             }, {
                 headers: {
