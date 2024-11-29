@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import "./Signup.css";
-import {Link, Navigate, useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 const Signup = () => {
   const [username, setUserName] = useState("");
   const [email, setEmail] = useState(""); 
@@ -8,6 +8,10 @@ const Signup = () => {
   const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!username || !email || !password) {
+      alert("All fields are required!");
+      return;
+    }
     try {
       const response = await fetch("https://userauthmern.onrender.com/auth/signup", {
         method: "POST",
@@ -18,15 +22,15 @@ const Signup = () => {
         body: JSON.stringify({ username, email, password }), 
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to sign up");
-        // alert(response.body.message);
+      if(response.ok){
+        const data = await response.json();
+        console.log(data);
+        navigate("/login");
+      }else{
+        throw new Error("Failed to sign up"+response.statusText);
       }
-      navigate("/login");
-      const data = await response.json();
-      console.log(data);
     } catch (err) {
-      console.error(err);
+      console.error("Error during signup: ",err);
     }
   };
 
