@@ -8,9 +8,12 @@ const router = express.Router();
 // POST request for Signup
 router.post("/signup", async (req, res) => {
   const { username, email, password } = req.body;
-      console.log(username);
-      console.log(email);
-      console.log(password);
+  console.log(username);
+  console.log(email);
+  console.log(password);
+  if (!username || !email || !password) {
+    return res.status(400).json({ message: 'All fields are required' });
+  }
   try {
     const user = await User.findOne({ email });
     if (user) {
@@ -73,7 +76,7 @@ router.post("/login", async (req, res) => {
     });
 
     // Successful response
-    return res.status(200).json({ status:true,message: "Login successful!" });
+    return res.status(200).json({ status: true, message: "Login successful!" });
   } catch (error) {
     console.error("Login Error:", error);
     return res.status(500).json({ message: "Internal Server Error" });
@@ -161,8 +164,8 @@ router.post('/reset-password/:token', async (req, res) => {
   try {
     // Verify the token
     const decoded = jwt.verify(token, process.env.KEY);
-    if(!decoded){
-      return res.status(401).json({message:"Your pasword Reset session expired!"});
+    if (!decoded) {
+      return res.status(401).json({ message: "Your pasword Reset session expired!" });
     }
     // Find the user based on the decoded ID
     const user = await User.findById(decoded.id);
