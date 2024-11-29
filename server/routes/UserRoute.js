@@ -1,5 +1,5 @@
 import express from "express";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { User } from "../models/User.js";
 import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
@@ -15,13 +15,13 @@ router.post("/signup", async (req, res) => {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    // const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = new User({
       username,
       email,
-      // password: hashedPassword
-      password:password
+      password: hashedPassword
+      // password:password
     });
 
     await newUser.save();
