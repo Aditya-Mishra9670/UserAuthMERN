@@ -8,7 +8,9 @@ const router = express.Router();
 // POST request for Signup
 router.post("/signup", async (req, res) => {
   const { username, email, password } = req.body;
-
+      console.log(username);
+      console.log(email);
+      console.log(password);
   try {
     const user = await User.findOne({ email });
     if (user) {
