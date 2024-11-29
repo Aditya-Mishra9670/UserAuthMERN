@@ -19,7 +19,7 @@ app.use(express.json());
 const corsOptions = {
   origin: [
     'http://localhost:5173', 
-    'https://aditya-mishra9670.github.io/signup'
+    'https://aditya-mishra9670.github.io'
   ],
   credentials: true, // Important for sending cookies across origins
 };

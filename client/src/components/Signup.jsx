@@ -10,7 +10,8 @@ const Signup = () => {
     e.preventDefault();
     try {
       const response = await fetch("https://userauthmern.onrender.com/auth/signup", {
-        method: "POST", 
+        method: "POST",
+        mode:'no-cors', 
         headers: {
           "Content-Type": "application/json", 
         },
