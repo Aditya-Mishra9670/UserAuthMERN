@@ -15,12 +15,13 @@ router.post("/signup", async (req, res) => {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    // const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = new User({
       username,
       email,
-      password: hashedPassword
+      // password: hashedPassword
+      password:password
     });
 
     await newUser.save();
@@ -105,7 +106,7 @@ router.post("/forgot-password", async (req, res) => {
       from: process.env.MYEMAIL,
       to: email,
       subject: "Password Reset Request",
-      text: `Click on the following link to reset your password: http://localhost:5173/resetPassword/${token}`
+      text: `Click on the following link to reset your password: https://Aditya-Mishra9670.github.io/resetPassword/${token}`
     };
 
     // Send email
