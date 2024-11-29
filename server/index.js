@@ -17,9 +17,13 @@ app.use(express.json());
 
 // Cors configuration for allowing credentials
 const corsOptions = {
-  origin: 'http://localhost:5173',
+  origin: [
+    'http://localhost:5173', 
+    'https://aditya-mishra9670.github.io/signup'
+  ],
   credentials: true, // Important for sending cookies across origins
 };
+
 app.use(cors(corsOptions));
 
 // Routes
